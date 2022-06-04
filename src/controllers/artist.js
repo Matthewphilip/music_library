@@ -69,3 +69,20 @@ exports.create = async (req, res) => {
   
     db.close();
   };
+
+  exports.destroy = async (req, res) => {
+    const db = await getDb();
+    const {artistId} = req.params;
+
+    const [ {affectedRows }, ] = await db.query('DELETE FROM Artist WHERE id = ?', [
+      artistId
+    ]); 
+
+    if (!affectedRows) {
+      res.sendStatus(404);
+    } else {
+      res.status(200).json(affectedRows);
+    }
+
+    db.close();
+  }
